@@ -58,7 +58,7 @@ class SMPLifyAnglePrior(nn.Module):
         # 58: right elbow, 90deg bend at np.pi/2
         # 12: left knee,   90deg bend at np.pi/2
         # 15: right knee,  90deg bend at np.pi/2
-        angle_prior_idxs = np.array([55, 58, 12, 15], dtype=np.long)
+        angle_prior_idxs = np.array([55, 58, 12, 15], dtype=int)
         angle_prior_idxs = torch.tensor(angle_prior_idxs, dtype=torch.long)
         self.register_buffer('angle_prior_idxs', angle_prior_idxs)
 

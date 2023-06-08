@@ -347,11 +347,11 @@ def read_src_infos(vid_infos, num_source, num_verts=6890, ignore_bg=False):
 
     if links_ids is not None:
         num_links = links_ids.shape[0]
-        links = np.zeros((num_verts, 3), dtype=np.long)
+        links = np.zeros((num_verts, 3), dtype=int)
         links[0:num_links, 0:2] = links_ids
         links[0:num_links, 2] = 1
     else:
-        links = np.zeros((num_verts, 3), dtype=np.long)
+        links = np.zeros((num_verts, 3), dtype=int)
 
     formated_vid_infos = {
         "input_info": vid_infos["input_info"],
