@@ -77,7 +77,7 @@ def read_mask(path, image_size):
     """
     mask = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
     mask = cv2.resize(mask, (image_size, image_size))
-    mask = mask.astype(np.float32) / 255
+    mask = mask.astype(float) / 255
     mask = np.expand_dims(mask, 0)
 
     return mask
@@ -86,7 +86,7 @@ def read_mask(path, image_size):
 def load_parse(parse_path, image_size):
     mask = cv2.imread(parse_path, cv2.IMREAD_GRAYSCALE)
     mask = cv2.resize(mask, (image_size, image_size))
-    mask = mask.astype(np.float32) / 255
+    mask = mask.astype(float) / 255
     mask = np.expand_dims(mask, 0)
     return mask
 
@@ -119,7 +119,7 @@ def save_cv2_img(img, path, image_size=None, normalize=False, transpose=True):
 def transform_img(image, image_size=None, transpose=False):
     if image_size is not None and image_size != image.shape[0]:
         image = cv2.resize(image, (image_size, image_size))
-    image = image.astype(np.float32)
+    image = image.astype(float)
     image /= 255.0
 
     if transpose:
@@ -390,7 +390,7 @@ def intrinsic_mtx(f, c):
     """
     return np.array([[f[1], 0, c[1]],
                      [0, f[0], c[0]],
-                     [0, 0, 1]], dtype=np.float32)
+                     [0, 0, 1]], dtype=float)
 
 
 def extrinsic_mtx(rt, t):
@@ -408,7 +408,7 @@ def extrinsic_mtx(rt, t):
     Rc = np.dot(R, t)
     ext_mat = np.hstack((R, -Rc))
     ext_mat = np.vstack((ext_mat, [0, 0, 0, 1]))
-    ext_mat = ext_mat.astype(np.float32)
+    ext_mat = ext_mat.astype(float)
     return ext_mat
 
 
@@ -437,15 +437,15 @@ def euler2matrix(rt):
     """
     Rx = np.array([[1, 0,             0],
                    [0, np.cos(rt[0]), -np.sin(rt[0])],
-                   [0, np.sin(rt[0]), np.cos(rt[0])]], dtype=np.float32)
+                   [0, np.sin(rt[0]), np.cos(rt[0])]], dtype=float)
 
     Ry = np.array([[np.cos(rt[1]),     0,       np.sin(rt[1])],
                    [0,                 1,       0],
-                   [-np.sin(rt[1]),    0,       np.cos(rt[1])]], dtype=np.float32)
+                   [-np.sin(rt[1]),    0,       np.cos(rt[1])]], dtype=float)
 
     Rz = np.array([[np.cos(rt[2]),     -np.sin(rt[2]),       0],
                    [np.sin(rt[2]),      np.cos(rt[2]),       0],
-                   [0,                              0,       1]], dtype=np.float32)
+                   [0,                              0,       1]], dtype=float)
 
     return np.dot(Rz, np.dot(Ry, Rx))
 
@@ -561,7 +561,7 @@ if __name__ == '__main__':
         n = np.linalg.norm(I - shouldBeIdentity)
         return n < 1e-6
 
-    R = euler2matrix(np.array([0, 90, 0], dtype=np.float32))
+    R = euler2matrix(np.array([0, 90, 0], dtype=float))
 
     print(isRotationMatrix(R))
 

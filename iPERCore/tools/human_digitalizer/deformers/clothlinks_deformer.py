@@ -43,7 +43,7 @@ class ClothSmplLinkDeformer(object):
         mask = mask_outputs[0]
 
         if isinstance(mask, str):
-            mask = cv2.imread(mask, cv2.IMREAD_GRAYSCALE).astype(np.float32) / 255
+            mask = cv2.imread(mask, cv2.IMREAD_GRAYSCALE).astype(float) / 255
 
         mask_h = mask.shape[0]
         skirt_y_int = np.argwhere(mask == 1)[-1][0]

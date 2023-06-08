@@ -204,7 +204,7 @@ class SMPL(nn.Module):
 
         self.faces = data_struct.f
         self.register_buffer('faces_tensor',
-                             to_tensor(to_np(self.faces, dtype=np.int64),
+                             to_tensor(to_np(self.faces, dtype=np.long),
                                        dtype=torch.long))
 
         if create_betas:

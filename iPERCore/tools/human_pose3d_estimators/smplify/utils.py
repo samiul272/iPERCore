@@ -58,40 +58,40 @@ def smpl_to_openpose(model_type="smplx", use_hands=True, use_face=True,
         if model_type == "smpl":
             return np.array([24, 12, 17, 19, 21, 16, 18, 20, 0, 2, 5, 8, 1, 4,
                              7, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34],
-                            dtype=np.int32)
+                            dtype=int)
         elif model_type == "smplh":
             body_mapping = np.array([52, 12, 17, 19, 21, 16, 18, 20, 0, 2, 5,
                                      8, 1, 4, 7, 53, 54, 55, 56, 57, 58, 59,
-                                     60, 61, 62], dtype=np.int32)
+                                     60, 61, 62], dtype=int)
             mapping = [body_mapping]
             if use_hands:
                 lhand_mapping = np.array([20, 34, 35, 36, 63, 22, 23, 24, 64,
                                           25, 26, 27, 65, 31, 32, 33, 66, 28,
-                                          29, 30, 67], dtype=np.int32)
+                                          29, 30, 67], dtype=int)
                 rhand_mapping = np.array([21, 49, 50, 51, 68, 37, 38, 39, 69,
                                           40, 41, 42, 70, 46, 47, 48, 71, 43,
-                                          44, 45, 72], dtype=np.int32)
+                                          44, 45, 72], dtype=int)
                 mapping += [lhand_mapping, rhand_mapping]
             return np.concatenate(mapping)
         # SMPLX
         elif model_type == "smplx":
             body_mapping = np.array([55, 12, 17, 19, 21, 16, 18, 20, 0, 2, 5,
                                      8, 1, 4, 7, 56, 57, 58, 59, 60, 61, 62,
-                                     63, 64, 65], dtype=np.int32)
+                                     63, 64, 65], dtype=int)
             mapping = [body_mapping]
             if use_hands:
                 lhand_mapping = np.array([20, 37, 38, 39, 66, 25, 26, 27,
                                           67, 28, 29, 30, 68, 34, 35, 36, 69,
-                                          31, 32, 33, 70], dtype=np.int32)
+                                          31, 32, 33, 70], dtype=int)
                 rhand_mapping = np.array([21, 52, 53, 54, 71, 40, 41, 42, 72,
                                           43, 44, 45, 73, 49, 50, 51, 74, 46,
-                                          47, 48, 75], dtype=np.int32)
+                                          47, 48, 75], dtype=int)
 
                 mapping += [lhand_mapping, rhand_mapping]
             if use_face:
                 #  end_idx = 127 + 17 * use_face_contour
                 face_mapping = np.arange(76, 127 + 17 * use_face_contour,
-                                         dtype=np.int32)
+                                         dtype=int)
                 mapping += [face_mapping]
 
             return np.concatenate(mapping)
@@ -101,40 +101,40 @@ def smpl_to_openpose(model_type="smplx", use_hands=True, use_face=True,
         if model_type == "smpl":
             return np.array([24, 12, 17, 19, 21, 16, 18, 20, 0, 2, 5, 8,
                              1, 4, 7, 25, 26, 27, 28],
-                            dtype=np.int32)
+                            dtype=int)
         elif model_type == "smplh":
             body_mapping = np.array([52, 12, 17, 19, 21, 16, 18, 20, 0, 2, 5,
                                      8, 1, 4, 7, 53, 54, 55, 56],
-                                    dtype=np.int32)
+                                    dtype=int)
             mapping = [body_mapping]
             if use_hands:
                 lhand_mapping = np.array([20, 34, 35, 36, 57, 22, 23, 24, 58,
                                           25, 26, 27, 59, 31, 32, 33, 60, 28,
-                                          29, 30, 61], dtype=np.int32)
+                                          29, 30, 61], dtype=int)
                 rhand_mapping = np.array([21, 49, 50, 51, 62, 37, 38, 39, 63,
                                           40, 41, 42, 64, 46, 47, 48, 65, 43,
-                                          44, 45, 66], dtype=np.int32)
+                                          44, 45, 66], dtype=int)
                 mapping += [lhand_mapping, rhand_mapping]
             return np.concatenate(mapping)
         # SMPLX
         elif model_type == "smplx":
             body_mapping = np.array([55, 12, 17, 19, 21, 16, 18, 20, 0, 2, 5,
                                      8, 1, 4, 7, 56, 57, 58, 59],
-                                    dtype=np.int32)
+                                    dtype=int)
             mapping = [body_mapping]
             if use_hands:
                 lhand_mapping = np.array([20, 37, 38, 39, 60, 25, 26, 27,
                                           61, 28, 29, 30, 62, 34, 35, 36, 63,
-                                          31, 32, 33, 64], dtype=np.int32)
+                                          31, 32, 33, 64], dtype=int)
                 rhand_mapping = np.array([21, 52, 53, 54, 65, 40, 41, 42, 66,
                                           43, 44, 45, 67, 49, 50, 51, 68, 46,
-                                          47, 48, 69], dtype=np.int32)
+                                          47, 48, 69], dtype=int)
 
                 mapping += [lhand_mapping, rhand_mapping]
             if use_face:
                 face_mapping = np.arange(70, 70 + 51 +
                                          17 * use_face_contour,
-                                         dtype=np.int32)
+                                         dtype=int)
                 mapping += [face_mapping]
 
             return np.concatenate(mapping)

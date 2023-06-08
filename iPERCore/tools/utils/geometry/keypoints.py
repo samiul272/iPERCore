@@ -189,7 +189,7 @@ class OpenPoseBody25KeypointFormater(KeypointFormater):
         Returns:
             to_smpl_kps (np.ndarray): (self.num_smpl_joints, 3) the re-normalized keypoints.
         """
-        kps = np.reshape(np.array(keypoints["pose_keypoints_2d"], copy=True, dtype=np.float32), (-1, 3))
+        kps = np.reshape(np.array(keypoints["pose_keypoints_2d"], copy=True, dtype=float), (-1, 3))
 
         if im_shape is None:
             # (kps + 1) / 2 * 224
@@ -199,7 +199,7 @@ class OpenPoseBody25KeypointFormater(KeypointFormater):
             kps[:, 0] = kps[:, 0] / width * 224
             kps[:, 1] = kps[:, 1] / height * 224
 
-        to_smpl_kps = np.zeros((self.num_smpl_joints, 3), dtype=np.float32)
+        to_smpl_kps = np.zeros((self.num_smpl_joints, 3), dtype=float)
         to_smpl_kps[self.mapper] = kps
         to_smpl_kps[self.ignore_ids] = 0
 
@@ -250,7 +250,7 @@ class OpenPoseBody25KeypointFormater(KeypointFormater):
         for i in range(length):
             pose_keypoints_2d.append(keypoints_list[i]["pose_keypoints_2d"])
 
-        pose_keypoints_2d = np.array(pose_keypoints_2d, dtype=np.float32)
+        pose_keypoints_2d = np.array(pose_keypoints_2d, dtype=float)
 
         stack_keypoints = {
             "pose_keypoints_2d": pose_keypoints_2d
@@ -334,7 +334,7 @@ class CocoWholeBody23KeypointFormater(KeypointFormater):
         Returns:
             to_smpl_kps (np.ndarray): (self.num_smpl_joints, 3) the re-normalized keypoints.
         """
-        kps = np.reshape(np.array(keypoints["pose_keypoints_2d"], copy=True, dtype=np.float32), (-1, 3))
+        kps = np.reshape(np.array(keypoints["pose_keypoints_2d"], copy=True, dtype=float), (-1, 3))
 
         if im_shape is None:
             # (kps + 1) / 2 * 224
@@ -344,7 +344,7 @@ class CocoWholeBody23KeypointFormater(KeypointFormater):
             kps[:, 0] = kps[:, 0] / width * 224
             kps[:, 1] = kps[:, 1] / height * 224
 
-        to_smpl_kps = np.zeros((self.num_smpl_joints, 3), dtype=np.float32)
+        to_smpl_kps = np.zeros((self.num_smpl_joints, 3), dtype=float)
         to_smpl_kps[self.mapper] = kps
         to_smpl_kps[self.ignore_ids] = 0
 
@@ -394,7 +394,7 @@ class CocoWholeBody23KeypointFormater(KeypointFormater):
         for i in range(length):
             pose_keypoints_2d.append(keypoints_list[i]["pose_keypoints_2d"])
 
-        pose_keypoints_2d = np.array(pose_keypoints_2d, dtype=np.float32)
+        pose_keypoints_2d = np.array(pose_keypoints_2d, dtype=float)
 
         stack_keypoints = {
             "pose_keypoints_2d": pose_keypoints_2d
@@ -427,7 +427,7 @@ class HalpeBody26KeypointFormater(KeypointFormater):
         Returns:
             kps (np.ndarray): (75, 3) the re-normalized keypoints.
         """
-        kps = np.reshape(np.array(keypoints["pose_keypoints_2d"], copy=True, dtype=np.float32), (-1, 3))
+        kps = np.reshape(np.array(keypoints["pose_keypoints_2d"], copy=True, dtype=float), (-1, 3))
 
         if im_shape is None:
             # (kps + 1) / 2 * 224
@@ -437,7 +437,7 @@ class HalpeBody26KeypointFormater(KeypointFormater):
             kps[:, 0] = kps[:, 0] / width * 224
             kps[:, 1] = kps[:, 1] / height * 224
 
-        kps = np.concatenate([np.zeros((25 + 24, 3), dtype=np.float32), kps], axis=0)
+        kps = np.concatenate([np.zeros((25 + 24, 3), dtype=float), kps], axis=0)
 
         return kps
 
@@ -490,7 +490,7 @@ class HalpeBody26KeypointFormater(KeypointFormater):
             for i in range(length):
                 pose_keypoints_2d.append(keypoints_list_or_dict[i]["pose_keypoints_2d"])
 
-            pose_keypoints_2d = np.array(pose_keypoints_2d, dtype=np.float32)
+            pose_keypoints_2d = np.array(pose_keypoints_2d, dtype=float)
 
             stack_keypoints = {
                 "pose_keypoints_2d": pose_keypoints_2d

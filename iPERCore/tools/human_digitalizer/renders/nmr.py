@@ -175,8 +175,8 @@ class BaseSMPLRenderer(nn.Module):
             obj_faces = np.concatenate((obj_faces, obj_faces[:, ::-1]), axis=0)
 
         self.nf = smpl_faces.shape[0]
-        self.register_buffer("smpl_faces", torch.tensor(smpl_faces.astype(np.int32)).int())
-        self.register_buffer("obj_faces", torch.tensor(obj_faces.astype(np.int32)).int())
+        self.register_buffer("smpl_faces", torch.tensor(smpl_faces.astype(int)).int())
+        self.register_buffer("obj_faces", torch.tensor(obj_faces.astype(int)).int())
 
         map_fn = torch.tensor(mesh.create_mapping(
             map_name, fim_enc_path, contain_bg=True, fill_back=fill_back)).float()

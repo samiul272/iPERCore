@@ -66,7 +66,7 @@ def preprocess(img, boxes):
 
     proc_img = image_padded[start_pt[1]:end_pt[1], start_pt[0]:end_pt[0], :]
     proc_img = cv2.cvtColor(proc_img, cv2.COLOR_BGR2RGB)
-    proc_img = proc_img.astype(np.float32) / 255
+    proc_img = proc_img.astype(float) / 255
     proc_img = np.transpose(proc_img, (2, 0, 1))
     # height, width = image_scaled.shape[:2]
 

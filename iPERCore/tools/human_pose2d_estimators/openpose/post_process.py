@@ -14,8 +14,8 @@ def infer(net, img, scales, base_height, stride, device, num_kpts=25,
     normed_img = normalize(img, img_mean, img_scale)
     height, width, _ = normed_img.shape
     scales_ratios = [scale * base_height / float(height) for scale in scales]
-    avg_heatmaps = np.zeros((height, width, num_kpts + 1), dtype=np.float32)
-    avg_pafs = np.zeros((height, width, num_kpts * 2 + 2), dtype=np.float32)
+    avg_heatmaps = np.zeros((height, width, num_kpts + 1), dtype=float)
+    avg_pafs = np.zeros((height, width, num_kpts * 2 + 2), dtype=float)
 
     for ratio in scales_ratios:
         scaled_img = cv2.resize(normed_img, (0, 0), fx=ratio, fy=ratio, interpolation=cv2.INTER_CUBIC)
@@ -229,8 +229,8 @@ def group_keypoints(all_keypoints_by_type, pafs, PoseClass, min_paf_score=0.05, 
             connections = sorted(connections, key=itemgetter(2), reverse=True)
 
         num_connections = min(num_kpts_a, num_kpts_b)
-        has_kpt_a = np.zeros(num_kpts_a, dtype=np.int32)
-        has_kpt_b = np.zeros(num_kpts_b, dtype=np.int32)
+        has_kpt_a = np.zeros(num_kpts_a, dtype=int)
+        has_kpt_b = np.zeros(num_kpts_b, dtype=int)
         filtered_connections = []
         for row in range(len(connections)):
             if len(filtered_connections) == num_connections:

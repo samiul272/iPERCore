@@ -212,7 +212,7 @@ def process_crop_img(orig_img, active_bbox, image_size):
     crop_img = orig_img[y0: y1, x0: x1, :]
     crop_h, crop_w = crop_img.shape[0:2]
 
-    start_pt = np.array([x0, y0], dtype=np.float32)
+    start_pt = np.array([x0, y0], dtype=float)
 
     pad_size = max(crop_h, crop_w) - min(crop_h, crop_w)
     pad = pad_size // 2
@@ -229,7 +229,7 @@ def process_crop_img(orig_img, active_bbox, image_size):
             pad_width=((pad_1, pad_2), (0, 0), (0, 0)),
             mode="edge"
         )
-        start_pt -= np.array([0, pad_1], dtype=np.float32)
+        start_pt -= np.array([0, pad_1], dtype=float)
 
     elif crop_h > crop_w:
         crop_img = np.pad(
@@ -237,14 +237,14 @@ def process_crop_img(orig_img, active_bbox, image_size):
             pad_width=((0, 0), (pad_1, pad_2), (0, 0)),
             mode="edge"
         )
-        start_pt -= np.array([pad_1, 0], dtype=np.float32)
+        start_pt -= np.array([pad_1, 0], dtype=float)
 
     pad_crop_size = crop_img.shape[0]
 
     scale = image_size / pad_crop_size
     start_pt *= scale
 
-    center = np.array([(x0 + x1) / 2, (y0 + y1) / 2], dtype=np.float32)
+    center = np.array([(x0 + x1) / 2, (y0 + y1) / 2], dtype=float)
     center *= scale
     center -= start_pt
 
@@ -325,7 +325,7 @@ def norm_kps(keypoints, orig_shape, norm_type="01=>-1+1"):
     new_kps = dict()
 
     height, width = orig_shape
-    orig_size = np.array([width, height], dtype=np.float32)[np.newaxis]
+    orig_size = np.array([width, height], dtype=float)[np.newaxis]
 
     src_type, tgt_type = norm_type.split("=>")
 

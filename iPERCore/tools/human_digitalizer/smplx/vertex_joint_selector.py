@@ -40,7 +40,7 @@ class VertexJointSelector(nn.Module):
             vertex_ids['reye'],
             vertex_ids['leye'],
             vertex_ids['rear'],
-            vertex_ids['lear']], dtype=np.int64)
+            vertex_ids['lear']], dtype=np.long)
 
         extra_joints_idxs = np.concatenate([extra_joints_idxs,
                                             face_keyp_idxs])
@@ -51,7 +51,7 @@ class VertexJointSelector(nn.Module):
                                        vertex_ids['LHeel'],
                                        vertex_ids['RBigToe'],
                                        vertex_ids['RSmallToe'],
-                                       vertex_ids['RHeel']], dtype=np.int32)
+                                       vertex_ids['RHeel']], dtype=int)
 
             extra_joints_idxs = np.concatenate(
                 [extra_joints_idxs, feet_keyp_idxs])

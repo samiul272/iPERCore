@@ -68,7 +68,7 @@ DATASET_SETTINGS = {
 
 def get_3rd_point(a, b):
     direct = a - b
-    return b + np.array([-direct[1], direct[0]], dtype=np.float32)
+    return b + np.array([-direct[1], direct[0]], dtype=float)
 
 
 def get_dir(src_point, rot_rad):
@@ -85,7 +85,7 @@ def get_affine_transform(center,
                          scale,
                          rot,
                          output_size,
-                         shift=np.array([0, 0], dtype=np.float32),
+                         shift=np.array([0, 0], dtype=float),
                          inv=0):
     if not isinstance(scale, np.ndarray) and not isinstance(scale, list):
         # print(scale)
@@ -97,10 +97,10 @@ def get_affine_transform(center,
 
     rot_rad = np.pi * rot / 180
     src_dir = get_dir([0, src_w * -0.5], rot_rad)
-    dst_dir = np.array([0, (dst_w - 1) * -0.5], np.float32)
+    dst_dir = np.array([0, (dst_w - 1) * -0.5], float)
 
-    src = np.zeros((3, 2), dtype=np.float32)
-    dst = np.zeros((3, 2), dtype=np.float32)
+    src = np.zeros((3, 2), dtype=float)
+    dst = np.zeros((3, 2), dtype=float)
     src[0, :] = center + scale * shift
     src[1, :] = center + src_dir + scale * shift
     dst[0, :] = [(dst_w - 1) * 0.5, (dst_h - 1) * 0.5]
@@ -110,9 +110,9 @@ def get_affine_transform(center,
     dst[2:, :] = get_3rd_point(dst[0, :], dst[1, :])
 
     if inv:
-        trans = cv2.getAffineTransform(np.float32(dst), np.float32(src))
+        trans = cv2.getAffineTransform(float(dst), float(src))
     else:
-        trans = cv2.getAffineTransform(np.float32(src), np.float32(dst))
+        trans = cv2.getAffineTransform(float(src), float(dst))
 
     return trans
 
@@ -172,7 +172,7 @@ def get_trimap(mask):
     dilated_mask = cv2.dilate(mask, kernel, iterations=10)
     erode_mask = cv2.erode(mask, kernel, iterations=2)
 
-    dilated_mask = dilated_mask.astype(np.float32)
+    dilated_mask = dilated_mask.astype(float)
     dilated_mask[dilated_mask != erode_mask] = 0.5
 
     return dilated_mask
@@ -528,14 +528,14 @@ class SCHPDataPreprocessor(object):
         return self._xywh2cs(x, y, w, h)
 
     def _xywh2cs(self, x, y, w, h):
-        center = np.zeros((2,), dtype=np.float32)
+        center = np.zeros((2,), dtype=float)
         center[0] = x + w * 0.5
         center[1] = y + h * 0.5
         if w > self.aspect_ratio * h:
             h = w * 1.0 / self.aspect_ratio
         elif w < self.aspect_ratio * h:
             w = h * self.aspect_ratio
-        scale = np.array([w, h], dtype=np.float32)
+        scale = np.array([w, h], dtype=float)
         return center, scale
 
     def __getitem__(self, index):

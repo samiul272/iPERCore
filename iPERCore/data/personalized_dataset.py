@@ -185,7 +185,7 @@ class PersonalizedDataset(VideoDataset):
         sample = self._transform(sample)
         sample["masks"] = torch.tensor(masks).float()
         sample["bg"] = torch.tensor(pseudo_bgs).float()
-        sample["offsets"] = torch.from_numpy(offsets.astype(np.float32, copy=False))
+        sample["offsets"] = torch.from_numpy(offsets.astype(float, copy=False))
         sample["links_ids"] = torch.tensor(links_ids).long()
 
         return sample

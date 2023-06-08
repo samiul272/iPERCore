@@ -24,7 +24,7 @@ def load_image(img_path, image_size):
     image = cv2.imread(img_path)
     image = cv2.resize(image, (image_size, image_size))
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    image = image.astype(np.float32)
+    image = image.astype(float)
     image = image / 255 * 2 - 1
 
     # (h, w, c) -> (c, h, w)

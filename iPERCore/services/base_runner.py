@@ -17,7 +17,7 @@ def create_T_pose_novel_view_smpl(length=180):
 
     """
 
-    smpls = np.zeros((length, 85), dtype=np.float32)
+    smpls = np.zeros((length, 85), dtype=float)
 
     delta = 360 / (length - 1) if length > 1 else 0
 
@@ -280,7 +280,7 @@ def get_src_info_for_swapper_inference(opt, vid_info_list):
 #         swap_parts = []
 #         for _ in range(num_source):
 #             if src_info["links"] is None:
-#                 _links = np.array([], dtype=np.int32)
+#                 _links = np.array([], dtype=int)
 #             else:
 #                 _links = src_info["links"]
 #

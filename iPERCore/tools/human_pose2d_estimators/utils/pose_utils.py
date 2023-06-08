@@ -81,7 +81,7 @@ class BasePose(object):
 
     @classmethod
     def get_bbox(cls, keypoints):
-        found_keypoints = np.zeros((np.count_nonzero(keypoints[:, 0] != -1), 2), dtype=np.float32)
+        found_keypoints = np.zeros((np.count_nonzero(keypoints[:, 0] != -1), 2), dtype=float)
         found_kpt_id = 0
         for kpt_id in range(cls.num_kpts):
             if keypoints[kpt_id, 0] == -1:
@@ -96,7 +96,7 @@ class BasePose(object):
         x0, y0 = np.min(found_keypoints, axis=0)
         x1, y1 = np.max(found_keypoints, axis=0)
 
-        bbox = np.array([x0, y0, x1, y1], dtype=np.float32)
+        bbox = np.array([x0, y0, x1, y1], dtype=float)
         return bbox
 
     @classmethod
@@ -129,7 +129,7 @@ class BasePose(object):
         """
         current_poses = sorted(current_poses, key=lambda pose: pose.confidence,
                                reverse=True)  # match confident poses first
-        mask = np.ones(len(previous_poses), dtype=np.int32)
+        mask = np.ones(len(previous_poses), dtype=int)
         for current_pose in current_poses:
             best_matched_id = None
             best_matched_pose_id = None
@@ -229,7 +229,7 @@ class OpenPoseBody25(BasePose):
         1.07, .87, .89, 1.07, .87, .89, .25, .25, .35, .35,
         # TODO, additional 6 feets
         .35, .35,  .25, .35, .35,  .25
-    ], dtype=np.float32) / 10.0
+    ], dtype=float) / 10.0
 
     vars = (sigmas * 2) ** 2
     last_id = -1
