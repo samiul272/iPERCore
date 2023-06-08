@@ -164,7 +164,7 @@ class SPINRunner(BasePose3dRunner):
             img_ids = sample["img_id"]
 
             with torch.no_grad():
-                init_smpls = self.model(images)
+                init_smpls = self.model(images.float())
             cams_orig = cam_init2orig(init_smpls[:, 0:3], scale, start_pt)
             cams = cam_norm(cams_orig, im_shape)
             init_smpls[:, 0:3] = cams
@@ -247,7 +247,7 @@ class SPINRunner(BasePose3dRunner):
             img_ids = sample["img_id"]
 
             with torch.no_grad():
-                init_smpls = self.model(images)
+                init_smpls = self.model(images.float())
             cams_orig = cam_init2orig(init_smpls[:, 0:3], scale, start_pt)
             cams = cam_norm(cams_orig, im_shape)
             init_smpls[:, 0:3] = cams
