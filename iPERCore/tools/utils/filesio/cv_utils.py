@@ -228,7 +228,7 @@ def process_hmr_img(im_path, bbox_param, rescale=None, image=None, image_size=25
         resized_h = orig_h * scale
         resized_w = orig_w * scale
 
-    center_scaled = np.round(center * scale_factors).astype(np.int)
+    center_scaled = np.round(center * scale_factors).astype(int)
 
     if proc:
         # Make sure there is enough space to crop image_size x image_size.

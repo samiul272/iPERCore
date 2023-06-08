@@ -71,7 +71,7 @@ def visual_pose3d_results(save_video_path, img_dir, smpls_info, parse_dir=None,
             image = draw_skeleton(image, joints, radius=6, transpose=False, threshold=0.25)
 
         image = np.transpose(image, (2, 0, 1))
-        image = image.astype(np.float) / 255
+        image = image.astype(float) / 255
         image = torch.tensor(image).float()[None].to(device)
 
         init_cams = torch.tensor(all_init_cams[i]).float()[None].to(device)

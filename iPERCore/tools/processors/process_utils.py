@@ -56,7 +56,7 @@ def format_imgs_dir(src_path, imgs_dir):
 
 
 def resize_img(img, scale_factor):
-    new_size = (np.floor(np.array(img.shape[0:2]) * np.float(scale_factor))).astype(int)
+    new_size = (np.floor(np.array(img.shape[0:2]) * float(scale_factor))).astype(int)
     new_img = cv2.resize(img, (new_size[1], new_size[0]))
     # This is scale factor of [height, width] i.e. [y, x]
     actual_factor = [
