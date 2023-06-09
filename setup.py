@@ -384,7 +384,7 @@ setup(
     url="https://github.com/iPERDance/iPERCore",
     description="The core of impersonator++.",
     packages=find_packages(exclude=("assets",)),
-    python_requires=">=3.6, <=3.8",
+    python_requires=">=3.6, <=3.9",
     install_requires=install_requires,
     entry_points={
         "console_scripts": [
