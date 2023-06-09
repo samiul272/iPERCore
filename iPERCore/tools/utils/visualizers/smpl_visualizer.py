@@ -86,7 +86,7 @@ def visual_pose3d_results(save_video_path, img_dir, smpls_info, parse_dir=None,
 
             if os.path.exists(alpha_path):
                 alpha = cv2.imread(alpha_path)
-                alpha = alpha.astype(float) / 255
+                alpha = alpha.astype(np.float32) / 255
                 alpha = np.transpose(alpha, (2, 0, 1))
                 alpha = torch.from_numpy(alpha).to(device)
                 alpha.unsqueeze_(0)

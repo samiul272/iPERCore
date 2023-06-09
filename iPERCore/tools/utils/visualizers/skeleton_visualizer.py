@@ -84,7 +84,7 @@ def draw_skeleton(orig_img, joints, radius=6, transpose=True, threshold=0.25):
 
     is_valid = joints[:, 2] > threshold
 
-    if np.issubdtype(image.dtype, float):
+    if np.issubdtype(image.dtype, np.float32):
         input_is_float = True
         max_val = image.max()
         if max_val <= 2.:  # should be 1 but sometimes it"s slightly above 1
@@ -144,9 +144,9 @@ def draw_skeleton(orig_img, joints, radius=6, transpose=True, threshold=0.25):
     # Convert back in original dtype
     if input_is_float:
         if max_val <= 1.:
-            image = image.astype(float) / 255.
+            image = image.astype(np.float32) / 255.
         else:
-            image = image.astype(float)
+            image = image.astype(np.float32)
     return image
 
 

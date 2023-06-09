@@ -62,13 +62,13 @@ def load_obj(obj_file):
             prefix = line_splits[0]
 
             if prefix == "v":
-                verts.append(np.array([line_splits[1], line_splits[2], line_splits[3]], dtype=float))
+                verts.append(np.array([line_splits[1], line_splits[2], line_splits[3]], dtype=np.float32))
 
             elif prefix == "vn":
-                vns.append(np.array([line_splits[1], line_splits[2], line_splits[3]], dtype=float))
+                vns.append(np.array([line_splits[1], line_splits[2], line_splits[3]], dtype=np.float32))
 
             elif prefix == "vt":
-                vts.append(np.array([line_splits[1], line_splits[2]], dtype=float))
+                vts.append(np.array([line_splits[1], line_splits[2]], dtype=np.float32))
 
             elif prefix == "f":
                 f = []
@@ -83,9 +83,9 @@ def load_obj(obj_file):
                         f_vn.append(p_split[2])
 
                 # index from 0
-                faces.append(np.array(f, dtype=int) - 1)
-                faces_vts.append(np.array(f_vt, dtype=int) - 1)
-                faces_vns.append(np.array(f_vn, dtype=int) - 1)
+                faces.append(np.array(f, dtype=np.int32) - 1)
+                faces_vts.append(np.array(f_vt, dtype=np.int32) - 1)
+                faces_vns.append(np.array(f_vn, dtype=np.int32) - 1)
 
             elif prefix == "g" or prefix == "s":
                 continue
@@ -95,12 +95,12 @@ def load_obj(obj_file):
                 pass
 
         obj_dict = {
-            "vertices": np.array(verts, dtype=float),
-            "faces": np.array(faces, dtype=int),
-            "vts": np.array(vts, dtype=float),
-            "vns": np.array(vns, dtype=float),
-            "faces_vts": np.array(faces_vts, dtype=int),
-            "faces_vns": np.array(faces_vns, dtype=int)
+            "vertices": np.array(verts, dtype=np.float32),
+            "faces": np.array(faces, dtype=np.int32),
+            "vts": np.array(vts, dtype=np.float32),
+            "vns": np.array(vns, dtype=np.float32),
+            "faces_vts": np.array(faces_vts, dtype=np.int32),
+            "faces_vns": np.array(faces_vns, dtype=np.int32)
         }
 
         return obj_dict
@@ -188,8 +188,8 @@ def create_uvsampler(uv_mapping_path="data/uv_mappings.txt", tex_size=2, fill_ba
     F x T x T points.
     Returns F x T*T x 2
     """
-    alpha = np.arange(tex_size, dtype=float) / (tex_size - 1)
-    beta = np.arange(tex_size, dtype=float) / (tex_size - 1)
+    alpha = np.arange(tex_size, dtype=np.float32) / (tex_size - 1)
+    beta = np.arange(tex_size, dtype=np.float32) / (tex_size - 1)
     # Barycentric coordinate values
     coords = np.stack([p for p in itertools.product(*[alpha, beta])])  # T*2 x 2
 
@@ -259,7 +259,7 @@ def get_f2vts(uv_map_path_or_obj_info, fill_back=False, z=1):
     vts = vts * 2 - 1
 
     # F x (2 + 1) = F x 3
-    vts = np.concatenate([vts, np.zeros((vts.shape[0], 1), dtype=float) + z], axis=-1)
+    vts = np.concatenate([vts, np.zeros((vts.shape[0], 1), dtype=np.float32) + z], axis=-1)
     faces = obj_info["faces_vts"]
 
     if fill_back:
@@ -383,14 +383,14 @@ def binary_mapping(nf):
     map_fn = [np.array(list(map(int, np.binary_repr(i, width=width)))) for i in range(nf)]
     map_fn = np.stack(map_fn, axis=0)
 
-    bg = np.zeros((1, width), dtype=float) - 1.0
+    bg = np.zeros((1, width), dtype=np.float32) - 1.0
 
     return map_fn, bg
 
 
 def ids_mapping(nf):
-    map_fn = np.arange(0, 1, 1/nf, dtype=float)
-    bg = np.array([[-1]], dtype=float)
+    map_fn = np.arange(0, 1, 1/nf, dtype=np.float32)
+    bg = np.array([[-1]], dtype=np.float32)
     return map_fn, bg
 
 
@@ -402,7 +402,7 @@ def par_mapping(nf, part_info, fill_back=False):
         part_data = json.load(reader)
 
         ndim = len(part_data) + 1 # 10
-        map_fn = np.zeros((nf, ndim), dtype=float)
+        map_fn = np.zeros((nf, ndim), dtype=np.float32)
 
         part_names = sorted(part_data.keys())
 
@@ -421,7 +421,7 @@ def par_mapping(nf, part_info, fill_back=False):
         assert nf_counter == nf, "nf_counter = {}, nf = {}".format(nf_counter, nf)
 
         # add bg
-        bg = np.zeros((1, ndim), dtype=float)
+        bg = np.zeros((1, ndim), dtype=np.float32)
         bg[0, -1] = 1
 
         return map_fn, bg
@@ -432,7 +432,7 @@ def front_mapping(nf, front_face_info, fill_back=False):
     if fill_back:
         half_nf = nf // 2
 
-    map_fn = np.zeros((nf, 1), dtype=float)
+    map_fn = np.zeros((nf, 1), dtype=np.float32)
 
     with open(front_face_info, "r") as reader:
         front_data = json.load(reader)
@@ -445,7 +445,7 @@ def front_mapping(nf, front_face_info, fill_back=False):
         map_fn[faces] = 1.0
 
     # add bg
-    bg = np.zeros((1, 1), dtype=float)
+    bg = np.zeros((1, 1), dtype=np.float32)
 
     return map_fn, bg
 
@@ -455,7 +455,7 @@ def back_mapping(nf, head_face_info, front_face_info, fill_back=False):
     if fill_back:
         half_nf = nf // 2
 
-    map_fn = np.zeros((nf, 1), dtype=float)
+    map_fn = np.zeros((nf, 1), dtype=np.float32)
 
     with open(head_face_info, "r") as reader:
         head_faces = set(json.load(reader)["face"])
@@ -469,7 +469,7 @@ def back_mapping(nf, head_face_info, front_face_info, fill_back=False):
         map_fn[faces] = 1.0
 
     # add bg
-    bg = np.zeros((1, 1), dtype=float)
+    bg = np.zeros((1, 1), dtype=np.float32)
 
     return map_fn, bg
 
@@ -509,14 +509,14 @@ def create_mapping(map_name, obj_info,
     if map_name == "uv":
         fbc = compute_barycenter(f2vts)
         map_fn = fbc[:, 0:2]    # F x 2
-        bg = np.array([[-1, -1]], dtype=float)
+        bg = np.array([[-1, -1]], dtype=np.float32)
     elif map_name == "seg":
-        map_fn = np.ones((nf, 1), dtype=float)
-        bg = np.array([[0]], dtype=float)
+        map_fn = np.ones((nf, 1), dtype=np.float32)
+        bg = np.array([[0]], dtype=np.float32)
     elif map_name == "uv_seg":
         fbc = compute_barycenter(f2vts)
         map_fn = fbc    # F x 3
-        bg = np.array([[0, 0, 1]], dtype=float)
+        bg = np.array([[0, 0, 1]], dtype=np.float32)
     elif map_name == "par":
         map_fn, bg = par_mapping(nf, part_path)
     elif map_name == "front":
@@ -599,7 +599,7 @@ def cvt_fim_enc(fim_enc, map_name):
 
     if map_name == "uv":
         # (H, W, 2), bg is -1, -> (H, W, 3)
-        img = np.ones((h, w, 3), dtype=float)
+        img = np.ones((h, w, 3), dtype=np.float32)
         # print(fim_enc.shape)
         img[:, :, 0:2] = fim_enc[:, :, 0:2]
         img = np.transpose(img, axes=(2, 0, 1))
@@ -616,7 +616,7 @@ def cvt_fim_enc(fim_enc, map_name):
     elif map_name == "par":
         # (H, W, C) -> (H, W)
         img = fim_enc.argmax(axis=-1)
-        img = img.astype(float)
+        img = img.astype(np.float32)
         img /= img.max()
 
     elif map_name == "ids":
@@ -624,7 +624,7 @@ def cvt_fim_enc(fim_enc, map_name):
         img = fim_enc[:, :, 0]
 
     elif map_name == "binary":
-        img = np.zeros((h, w), dtype=float)
+        img = np.zeros((h, w), dtype=np.float32)
 
         def bin2int(bits):
             total = 0
@@ -641,7 +641,7 @@ def cvt_fim_enc(fim_enc, map_name):
         img /= img.max()
     else:
         raise ValueError(map_name)
-    img = img.astype(float)
+    img = img.astype(np.float32)
     return img
 
 

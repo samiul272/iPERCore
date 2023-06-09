@@ -33,7 +33,7 @@ class Struct(object):
             setattr(self, key, val)
 
 
-def to_np(array, dtype=float):
+def to_np(array, dtype=np.float32):
     if 'scipy.sparse' in str(type(array)):
         array = array.todense()
     return np.array(array, dtype=dtype)

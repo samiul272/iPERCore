@@ -108,8 +108,8 @@ class SMPLH(SMPLX_SMPL, BaseSMPL):
         self.np_left_hand_components = left_hand_components
         self.np_right_hand_components = right_hand_components
 
-        self.np_hands_meanl = data_struct.hands_meanl.astype(float)
-        self.np_hands_meanr = data_struct.hands_meanr.astype(float)
+        self.np_hands_meanl = data_struct.hands_meanl.astype(np.float32)
+        self.np_hands_meanr = data_struct.hands_meanr.astype(np.float32)
 
         self.register_buffer(
             "hands_meanl",

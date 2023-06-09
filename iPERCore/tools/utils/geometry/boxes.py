@@ -17,8 +17,8 @@ def cal_mask_bbox(head_mask, factor=1.25):
     """
     bs, _, height, width = head_mask.shape
 
-    bbox = np.zeros((bs, 4), dtype=int)
-    valid = np.ones((bs,), dtype=float)
+    bbox = np.zeros((bs, 4), dtype=np.int32)
+    valid = np.ones((bs,), dtype=np.float32)
 
     for i in range(bs):
         mask = head_mask[i, 0]

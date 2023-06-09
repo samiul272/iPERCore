@@ -44,7 +44,7 @@ def batch_skew(vec, batch_size=None, device="cpu"):
     if batch_size is None:
         batch_size = vec.shape[0]
 
-    col_inds = np.array([1, 2, 3, 5, 6, 7], dtype=int)
+    col_inds = np.array([1, 2, 3, 5, 6, 7], dtype=np.int64)
 
     # indices = torch.from_numpy(np.reshape(
     #     np.reshape(np.arange(0, batch_size) * 9, [-1, 1]) + col_inds,
@@ -53,7 +53,7 @@ def batch_skew(vec, batch_size=None, device="cpu"):
     # For better compatibility， since if indices is torch.tensor, it must be long dtype.
     # For fixed index, np.ndarray might be better.
     indices = np.reshape(np.reshape(
-        np.arange(0, batch_size) * 9, [-1, 1]) + col_inds, newshape=(-1, )).astype(int)
+        np.arange(0, batch_size) * 9, [-1, 1]) + col_inds, newshape=(-1, )).astype(np.int64)
 
     updates = torch.stack(
         [
@@ -178,10 +178,10 @@ def batch_global_rigid_transformation(Rs, Js, parent, rotate_base=False, device=
         # root_rotation = np.matmul(Rs[:, 0, :, :], rot_x)
 
         rot_x = torch.from_numpy(np.array([[1, 0, 0], [0, -1, 0], [0, 0, -1]],
-                                          dtype=float)).type(Rs.dtype).to(device)
+                                          dtype=np.float32)).type(Rs.dtype).to(device)
 
         # rot_x = torch.from_numpy(np.array([[-1, 0, 0], [0, 1, 0], [0, 0, -1]],
-        #                                   dtype=float)).type(Rs.dtype).to(device)
+        #                                   dtype=np.float32)).type(Rs.dtype).to(device)
 
         rot_x = rot_x.repeat(N, 1).view(N, 3, 3)
         root_rotation = torch.matmul(Rs[:, 0, :, :], rot_x)
@@ -293,8 +293,8 @@ class SMPL(BaseSMPL):
 
         # define faces
         self.faces = dd["f"].astype(np.uint64, copy=True)
-        # self.register_buffer('faces', torch.from_numpy(undo_chumpy(dd['f']).astype(int)).type(dtype=torch.int32))
-        # self.faces = torch.from_numpy(dd['f'].astype(int)).type(dtype=torch.int32)
+        # self.register_buffer('faces', torch.from_numpy(undo_chumpy(dd['f']).astype(np.int32)).type(dtype=torch.int32))
+        # self.faces = torch.from_numpy(dd['f'].astype(np.int32)).type(dtype=torch.int32)
 
         # Mean template vertices
         self.register_buffer('v_template', torch.FloatTensor(dd['v_template']))
@@ -320,7 +320,7 @@ class SMPL(BaseSMPL):
             dd['posedirs'], [-1, num_pose_basis]).T))
 
         # indices of parents for each joints
-        self.parents = np.array(dd['kintree_table'][0].astype(int))
+        self.parents = np.array(dd['kintree_table'][0].astype(np.int32))
 
         # LBS weights (6890, 24)
         self.register_buffer('weights', torch.FloatTensor(dd['weights']))

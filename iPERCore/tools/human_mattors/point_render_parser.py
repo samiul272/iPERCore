@@ -119,7 +119,7 @@ class PointRenderGCAMattor(object):
             # in COCO dataset, `0` represents the person,
             # segm_result[self.person_label_index] represents all the results of Person,
             # segm_result[self.person_label_index][0] represents the first Person segmentation result.
-            segm_mask = segm_result[self.person_label_index][0].astype(float)
+            segm_mask = segm_result[self.person_label_index][0].astype(np.float32)
 
             # (src_h, src_w) 0 or 128 or 255
             trimap = self.generate_trimap(segm_mask)
@@ -142,7 +142,7 @@ class PointRenderGCAMattor(object):
             has_person (bool): whether there is person or not.
             segm_mask (np.ndarray): (h, w), 0 or 1
             trimap (np.ndarray): (h, w), 0 or 128, or 255;
-            pred_alpha (np.ndarray): (h, w), is in the range of [0, 1], float
+            pred_alpha (np.ndarray): (h, w), is in the range of [0, 1], np.float32
         """
 
         # TODO, do not write the middle outputs to disk, and make them in memory.
