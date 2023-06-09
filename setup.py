@@ -11,7 +11,7 @@ import re
 TORCH_DIST = "https://download.pytorch.org/whl/torch_stable.html"
 MMCV_DIST = "https://download.openmmlab.com/mmcv/dist"
 
-PIP_VERSION = "20.2.4"
+PIP_VERSION = "23.1"
 
 
 #                        cuda
