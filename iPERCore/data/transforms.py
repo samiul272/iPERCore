@@ -30,7 +30,7 @@ class ImageTransformer(object):
             if height != self.output_size or width != self.output_size:
                 image = cv2.resize(image, (self.output_size, self.output_size))
 
-            image = image.astype(float)
+            image = image.astype(np.float32)
             image /= 255.0
             image = image * 2 - 1
 
