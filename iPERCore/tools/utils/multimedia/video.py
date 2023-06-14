@@ -176,21 +176,21 @@ def merge_multi_outs(src_img, ref_img_path, multi_out_paths, pad):
     image_size = h
 
     merge_img = []
-    merge_img.append(src_img)
+    # merge_img.append(src_img)
 
     ref_img = cv2.imread(ref_img_path)
     if ref_img.shape[0] != image_size and ref_img.shape[1] != image_size:
         ref_img = cv2.resize(ref_img, (image_size, image_size))
 
-    merge_img.append(pad)
-    merge_img.append(ref_img)
+    # merge_img.append(pad)
+    # merge_img.append(ref_img)
 
     for out_img_path in multi_out_paths:
         out_img = cv2.imread(out_img_path)
         if out_img.shape[0] != image_size and out_img.shape[1] != image_size:
             out_img = cv2.resize(out_img, (image_size, image_size))
 
-        merge_img.append(pad)
+        # merge_img.append(pad)
         merge_img.append(out_img)
 
     # print(src_img.shape, ref_img.shape, out_img.shape)
@@ -469,14 +469,13 @@ def fuse_src_ref_multi_outputs(output_mp4_path, src_img_paths, ref_img_paths, mu
     tmp_avi_video_path = "%s.avi" % output_mp4_path
     fourcc = cv2.VideoWriter_fourcc(*"XVID")
 
-    W = fused_src_img.shape[1] + (image_size + pad) * (num_outs + 1)
+    W = fused_src_img.shape[1] #+ (image_size + pad) * (num_outs + 1)
     videoWriter = cv2.VideoWriter(tmp_avi_video_path, fourcc, fps, (W, image_size))
 
     i = 0
     with ProcessPoolExecutor(pool_size) as pool:
         for idx, img in enumerate(tqdm(pool.map(merge_multi_outs, [fused_src_img] * total,
                                                 ref_img_paths, multi_out_img_paths, [pad_region] * total))):
-            img = cv2.imread(multi_out_img_paths[idx])
             videoWriter.write(img)
 
             if output_dir is not None:
