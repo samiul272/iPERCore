@@ -184,7 +184,6 @@ def merge_multi_outs(src_img, ref_img_path, multi_out_paths, pad):
 
     merge_img.append(pad)
     merge_img.append(ref_img)
-    out_imgs = []
 
     for out_img_path in multi_out_paths:
         out_img = cv2.imread(out_img_path)
@@ -193,13 +192,11 @@ def merge_multi_outs(src_img, ref_img_path, multi_out_paths, pad):
 
         merge_img.append(pad)
         merge_img.append(out_img)
-        out_imgs.append(out_img)
 
     # print(src_img.shape, ref_img.shape, out_img.shape)
     merge_img = np.concatenate(merge_img, axis=1)
-    out_imgs = np.concatenate(out_imgs, axis=1)
 
-    return out_imgs
+    return merge_img
 
 
 def merge_src_out(src_img, out_img_path, pad):
@@ -479,7 +476,7 @@ def fuse_src_ref_multi_outputs(output_mp4_path, src_img_paths, ref_img_paths, mu
     with ProcessPoolExecutor(pool_size) as pool:
         for idx, img in enumerate(tqdm(pool.map(merge_multi_outs, [fused_src_img] * total,
                                                 ref_img_paths, multi_out_img_paths, [pad_region] * total))):
-
+            img = cv2.imread(multi_out_img_paths[idx])
             videoWriter.write(img)
 
             if output_dir is not None:
