@@ -79,8 +79,7 @@ def visual_pose3d_results(save_video_path, img_dir, smpls_info, parse_dir=None,
         init_shape = torch.tensor(all_init_shapes[i]).float()[None].to(device)
         init_result = render_result(image, cams=init_cams, poses=init_pose, shapes=init_shape)
 
-        # fused_images = [image, init_result]
-        fused_images = []
+        fused_images = [image, init_result]
 
         if parse_dir is not None:
             alpha_path = os.path.join(parse_dir, image_name.split(".")[0] + "_alpha.png")
@@ -91,7 +90,7 @@ def visual_pose3d_results(save_video_path, img_dir, smpls_info, parse_dir=None,
                 alpha = np.transpose(alpha, (2, 0, 1))
                 alpha = torch.from_numpy(alpha).to(device)
                 alpha.unsqueeze_(0)
-                # fused_images.append(alpha)
+                fused_images.append(alpha)
 
         if has_opt:
             opt_cams = torch.tensor(all_opt_cams[i]).float()[None].to(device)
@@ -105,7 +104,7 @@ def visual_pose3d_results(save_video_path, img_dir, smpls_info, parse_dir=None,
             nrow = 2
         else:
             nrow = 3
-        nrow = 1
+
         fused_images = torch.cat(fused_images, dim=0)
         fused_images = make_grid(fused_images, nrow=nrow, normalize=False)
 
