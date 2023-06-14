@@ -1,16 +1,17 @@
 # Copyright (c) 2020-2021 impersonator.org authors (Wen Liu and Zhixin Piao). All rights reserved.
 
-import os
-import cv2
 import glob
+import json
+import os
 import shutil
-from multiprocessing import Pool
+import subprocess
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
-from tqdm import tqdm
+from multiprocessing import Pool
+
+import cv2
 import numpy as np
-import subprocess
-import json
+from tqdm import tqdm
 
 default_ffmpeg_exe_path = "ffmpeg"
 default_ffprobe_exe_path = "ffprobe"
@@ -183,6 +184,7 @@ def merge_multi_outs(src_img, ref_img_path, multi_out_paths, pad):
 
     merge_img.append(pad)
     merge_img.append(ref_img)
+    out_imgs = []
 
     for out_img_path in multi_out_paths:
         out_img = cv2.imread(out_img_path)
@@ -191,11 +193,13 @@ def merge_multi_outs(src_img, ref_img_path, multi_out_paths, pad):
 
         merge_img.append(pad)
         merge_img.append(out_img)
+        out_imgs.append(out_img)
 
     # print(src_img.shape, ref_img.shape, out_img.shape)
     merge_img = np.concatenate(merge_img, axis=1)
+    out_imgs = np.concatenate(out_imgs, axis=1)
 
-    return merge_img
+    return out_imgs
 
 
 def merge_src_out(src_img, out_img_path, pad):
@@ -450,7 +454,6 @@ def fuse_source_reference_output(output_mp4_path, src_img_paths, ref_img_paths, 
 
 def fuse_src_ref_multi_outputs(output_mp4_path, src_img_paths, ref_img_paths, multi_out_img_paths, audio_path=None,
                                output_dir=None, image_size=512, pad=10, pad_val=0, fps=25, pool_size=15):
-
     global default_ffmpeg_vcodec, default_ffmpeg_pix_fmt, default_ffmpeg_exe_path
 
     ffmpeg_exc_path = os.environ.get("ffmpeg_exe_path", default_ffmpeg_exe_path)
@@ -474,8 +477,8 @@ def fuse_src_ref_multi_outputs(output_mp4_path, src_img_paths, ref_img_paths, mu
 
     i = 0
     with ProcessPoolExecutor(pool_size) as pool:
-        for img in tqdm(pool.map(merge_multi_outs, [fused_src_img] * total,
-                                 ref_img_paths, multi_out_img_paths, [pad_region] * total)):
+        for idx, img in enumerate(tqdm(pool.map(merge_multi_outs, [fused_src_img] * total,
+                                                ref_img_paths, multi_out_img_paths, [pad_region] * total))):
 
             videoWriter.write(img)
 
@@ -695,4 +698,3 @@ def check_video_has_audio(video_path):
             break
 
     return has_audio
-
